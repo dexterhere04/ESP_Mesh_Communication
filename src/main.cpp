@@ -1,23 +1,16 @@
 #include <Arduino.h>
-#include <Wire.h>
+#include <U8g2lib.h>
+
+U8G2_SH1106_128X64_NONAME_F_HW_I2C display(U8G2_R0);
 
 void setup() {
-  Serial.begin(115200);
-  Wire.begin(21,22);
+  display.begin();
 }
 
 void loop() {
-
-  Serial.println("Scanning...");
-
-  for(byte addr=1; addr<127; addr++){
-    Wire.beginTransmission(addr);
-
-    if(Wire.endTransmission()==0){
-      Serial.print("Found I2C device at 0x");
-      Serial.println(addr,HEX);
-    }
-  }
-
-  delay(3000);
+  display.clearBuffer();
+  display.setFont(u8g2_font_ncenB08_tr);
+  display.drawStr(10,30,"HELLO");
+  display.sendBuffer();
+  delay(1000);
 }
