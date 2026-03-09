@@ -1,12 +1,23 @@
 #include <Arduino.h>
+#include <Wire.h>
 
 void setup() {
-    Serial.begin(115200);
-    delay(2000);  // give time for serial monitor
-    Serial.println("ESP32 started");
+  Serial.begin(115200);
+  Wire.begin(21,22);
 }
 
 void loop() {
-    Serial.println("running...");
-    delay(1000);
+
+  Serial.println("Scanning...");
+
+  for(byte addr=1; addr<127; addr++){
+    Wire.beginTransmission(addr);
+
+    if(Wire.endTransmission()==0){
+      Serial.print("Found I2C device at 0x");
+      Serial.println(addr,HEX);
+    }
+  }
+
+  delay(3000);
 }
